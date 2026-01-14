@@ -3,6 +3,8 @@ import { AppLayout } from './components/Layout/AppLayout';
 import { TextEditor } from './components/Editor/TextEditor';
 import { IssuesSidebar } from './components/Sidebar/IssuesSidebar';
 import { IssueModal } from './components/IssueModal/IssueModal';
+import { AuthModal } from './components/Auth';
+import { DocumentList } from './components/Documents';
 import { useEditorStore } from './store/editor-store';
 import { useGrammarCheck } from './hooks/useGrammarCheck';
 
@@ -24,6 +26,8 @@ function App() {
       </div>
       <IssuesSidebar />
       <IssueModal />
+      <AuthModal />
+      <DocumentList />
     </AppLayout>
   );
 }

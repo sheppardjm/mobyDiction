@@ -1,14 +1,22 @@
+import { useConvexAuth } from 'convex/react';
 import { useGrammarStore } from '../../store/grammar-store';
 import { useDocumentImport } from '../../hooks/useDocumentImport';
+import { useAuthStore } from '../../store/auth-store';
+import { useDocumentsStore } from '../../store/documents-store';
 import { Button } from '../ui/button';
+import { UserMenu } from '../Auth';
+import { SaveDocumentButton } from '../Documents';
 import { useRef, useMemo } from 'react';
 
 export function Header() {
+  const { isAuthenticated, isLoading: isAuthLoading } = useConvexAuth();
   const isChecking = useGrammarStore((state) => state.isChecking);
   const issues = useGrammarStore((state) => state.issues);
   const activeIssues = useMemo(() => issues.filter((issue) => issue.status === 'pending'), [issues]);
   const { importFile, importFromClipboard, exportText } = useDocumentImport();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const openAuthModal = useAuthStore((s) => s.openAuthModal);
+  const { toggleDocumentList, lastSaved } = useDocumentsStore();
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -136,6 +144,42 @@ export function Header() {
               </svg>
               <span className="hidden lg:inline">Copy</span>
             </Button>
+          </div>
+
+          {/* Divider before auth */}
+          <div className="hidden md:block w-px h-8 bg-gradient-to-b from-transparent via-border to-transparent" />
+
+          {/* Document & Auth Controls */}
+          <div className="flex items-center gap-2">
+            {isAuthenticated && (
+              <>
+                <Button variant="ghost" size="sm" onClick={toggleDocumentList} className="gap-2">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                  </svg>
+                  <span className="hidden lg:inline">Documents</span>
+                </Button>
+                <SaveDocumentButton />
+                {lastSaved && (
+                  <span className="text-xs text-muted-foreground hidden xl:inline">
+                    Saved {lastSaved.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
+                  </span>
+                )}
+              </>
+            )}
+
+            {!isAuthLoading && !isAuthenticated && (
+              <>
+                <Button variant="ghost" size="sm" onClick={() => openAuthModal('signIn')}>
+                  Sign In
+                </Button>
+                <Button variant="default" size="sm" onClick={() => openAuthModal('signUp')}>
+                  Sign Up
+                </Button>
+              </>
+            )}
+
+            {isAuthenticated && <UserMenu />}
           </div>
         </div>
       </div>
