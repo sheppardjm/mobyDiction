@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useGrammarStore } from '../../store/grammar-store';
 import { useUIStore } from '../../store/ui-store';
 import { ScrollArea } from '../ui/scroll-area';
 import { IssueListItem } from './IssueListItem';
 import type { IssueCategory } from '../../types/grammar';
 
-const categoryConfig: Record<IssueCategory, { label: string; icon: JSX.Element }> = {
+const categoryConfig: Record<IssueCategory, { label: string; icon: React.ReactElement }> = {
   grammar: {
     label: 'Grammar',
     icon: (

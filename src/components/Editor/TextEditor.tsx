@@ -34,10 +34,9 @@ export function TextEditor() {
 
   const handleChange = (editorState: EditorState) => {
     editorState.read(() => {
-      const textContent = editorState.read(() => {
-        const root = editorState._nodeMap.get('root');
-        return root?.__cachedText || '';
-      });
+      // Get text content from the editor state using the root element
+      const root = editorState._nodeMap.get('root');
+      const textContent = root?.getTextContent?.() || '';
       setText(textContent);
     });
   };

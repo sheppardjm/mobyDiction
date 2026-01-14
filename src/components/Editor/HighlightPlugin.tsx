@@ -30,9 +30,9 @@ export function HighlightPlugin({ issues, onIssueClick }: HighlightPluginProps) 
     // Note: This is a simplified version. A production app would use
     // Lexical's decorator system or custom nodes for better integration
 
-    const textContent = editor.getEditorState().read(() => {
-      const root = editor.getEditorState()._nodeMap.get('root');
-      return root?.__cachedText || '';
+    editor.getEditorState().read(() => {
+      // Access root to trigger any needed updates
+      editor.getEditorState()._nodeMap.get('root');
     });
 
     // Store issues for reference
