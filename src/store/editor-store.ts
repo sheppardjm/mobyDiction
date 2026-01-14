@@ -45,7 +45,11 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
     const before = text.substring(0, offset);
     const after = text.substring(offset + length);
     const newText = before + replacement + after;
-    set({ text: newText, isDirty: true });
+    set((state) => ({
+      text: newText,
+      isDirty: true,
+      externalVersion: state.externalVersion + 1,
+    }));
   },
 
   resetToOriginal: () => {
