@@ -5,9 +5,11 @@ interface EditorStore {
   text: string;
   originalText: string;
   isDirty: boolean;
+  externalVersion: number; // Incremented when text is set externally (import, document switch)
 
   // Actions
   setText: (text: string) => void;
+  setTextExternal: (text: string) => void; // Use for import/document switch to trigger editor sync
   setOriginalText: (text: string) => void;
   applyEdit: (offset: number, length: number, replacement: string) => void;
   resetToOriginal: () => void;
@@ -19,10 +21,19 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
   text: '',
   originalText: '',
   isDirty: false,
+  externalVersion: 0,
 
   // Actions
   setText: (text) => {
     set({ text, isDirty: text !== get().originalText });
+  },
+
+  setTextExternal: (text) => {
+    set((state) => ({
+      text,
+      isDirty: text !== get().originalText,
+      externalVersion: state.externalVersion + 1,
+    }));
   },
 
   setOriginalText: (text) => {

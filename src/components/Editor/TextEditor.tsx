@@ -7,6 +7,7 @@ import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import type { EditorState } from 'lexical';
 import { useEditorStore } from '../../store/editor-store';
 import { HighlightPlugin } from './HighlightPlugin';
+import { SetContentPlugin } from './SetContentPlugin';
 import { EditorToolbar } from './EditorToolbar';
 import { useGrammarStore } from '../../store/grammar-store';
 
@@ -75,6 +76,7 @@ export function TextEditor() {
             />
             <HistoryPlugin />
             <OnChangePlugin onChange={handleChange} />
+            <SetContentPlugin />
             <HighlightPlugin issues={issues} onIssueClick={setCurrentIssue} />
           </div>
         </div>

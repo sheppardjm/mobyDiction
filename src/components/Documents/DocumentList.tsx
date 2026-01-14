@@ -79,13 +79,13 @@ export function DocumentList() {
     closeDocumentList,
     clearDocument,
   } = useDocumentsStore();
-  const setText = useEditorStore((s) => s.setText);
+  const setTextExternal = useEditorStore((s) => s.setTextExternal);
   const clearIssues = useGrammarStore((s) => s.clearIssues);
 
   const handleSelectDocument = (doc: Doc<'documents'>) => {
     setCurrentDocumentId(doc._id);
     setCurrentDocumentTitle(doc.title);
-    setText(doc.content);
+    setTextExternal(doc.content);
     clearIssues();
     closeDocumentList();
   };
@@ -94,7 +94,7 @@ export function DocumentList() {
     if (!docId) return;
     if (currentDocumentId === docId) {
       clearDocument();
-      setText('');
+      setTextExternal('');
       clearIssues();
     }
     await deleteDocument({ documentId: docId });
@@ -102,7 +102,7 @@ export function DocumentList() {
 
   const handleNewDocument = () => {
     clearDocument();
-    setText('');
+    setTextExternal('');
     clearIssues();
     closeDocumentList();
   };

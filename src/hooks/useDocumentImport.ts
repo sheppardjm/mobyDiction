@@ -2,35 +2,35 @@ import { useCallback } from 'react';
 import { useEditorStore } from '../store/editor-store';
 
 export function useDocumentImport() {
-  const setText = useEditorStore((state) => state.setText);
+  const setTextExternal = useEditorStore((state) => state.setTextExternal);
   const setOriginalText = useEditorStore((state) => state.setOriginalText);
 
   const importFile = useCallback(
     async (file: File) => {
       try {
         const text = await readFileAsText(file);
-        setText(text);
+        setTextExternal(text);
         setOriginalText(text);
       } catch (error) {
         console.error('Error importing file:', error);
         throw new Error('Failed to import file. Please try again.');
       }
     },
-    [setText, setOriginalText]
+    [setTextExternal, setOriginalText]
   );
 
   const importFromClipboard = useCallback(async () => {
     try {
       const text = await navigator.clipboard.readText();
       if (text) {
-        setText(text);
+        setTextExternal(text);
         setOriginalText(text);
       }
     } catch (error) {
       console.error('Error reading from clipboard:', error);
       throw new Error('Failed to read from clipboard. Please check permissions.');
     }
-  }, [setText, setOriginalText]);
+  }, [setTextExternal, setOriginalText]);
 
   const exportText = useCallback(async () => {
     const text = useEditorStore.getState().text;
