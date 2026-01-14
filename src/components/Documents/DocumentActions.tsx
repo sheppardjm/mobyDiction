@@ -29,7 +29,7 @@ export function DocumentActions() {
     try {
       if (currentDocumentId) {
         await updateDocument({
-          id: currentDocumentId,
+          documentId: currentDocumentId,
           title,
           content: text,
         });
@@ -52,7 +52,7 @@ export function DocumentActions() {
 
     try {
       await updateDocument({
-        id: currentDocumentId,
+        documentId: currentDocumentId,
         content: text,
       });
       setDirty(false);
