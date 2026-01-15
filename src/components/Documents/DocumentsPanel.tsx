@@ -48,7 +48,7 @@ export function DocumentsPanel({
 
   const handleDelete = async () => {
     if (documentToDelete) {
-      await removeDocument({ id: documentToDelete });
+      await removeDocument({ documentId: documentToDelete });
       if (currentDocumentId === documentToDelete) {
         onNewDocument();
       }
